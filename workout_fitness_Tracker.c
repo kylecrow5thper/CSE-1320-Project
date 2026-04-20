@@ -35,6 +35,7 @@ void viewWorkoutHistory(int count, Workouts workout[]){
         printf("Workout name: %s\nNumber of reps: %d\nWeight: %d\n",workout[i].workoutName,workout[i].reps,workout[i].weight);
     }
 }
+//this function opens a file checks if it opened then saves workout data to the file
 void saveData(int count, Workouts workout[]){
     FILE *fp = fopen("Workouts.txt", "a+"); 
     if(fp == NULL){
@@ -45,7 +46,7 @@ void saveData(int count, Workouts workout[]){
         fprintf(fp,"%s %d %d\n", workout[i].workoutName, workout[i].reps, workout[i].weight);
     }
 }
-
+//this function opens a file checks if it opened resets count to 0 then loads the data from the file.
 void loadData(int *count, Workouts workout[]){
     FILE *fp = fopen("Workouts.txt", "r");
     if(fp == NULL){
