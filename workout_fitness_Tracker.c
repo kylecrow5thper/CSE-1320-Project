@@ -99,17 +99,48 @@ void viewWorkoutPlan(char weeklyPlan[7][50]) {
 }
 
 int main() {
-    int count=0;
-    int *count1 = &count;
+    int count = 0;
     Workouts workout[100];
+    char weeklyPlan[7][50] = {""};
+    int choice;
 
-    RecordWorkout(count1,workout);
-    RecordWorkout(count1,workout);
-    RecordWorkout(count1,workout);
+    do {
+        displaymenu();
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
 
-    printf("%d\n", count);
+        switch (choice) {
+            case 1:
+                RecordWorkout(&count, workout);
+                break;
 
-    viewWorkoutHistory(count,workout);
+            case 2:
+                viewWorkoutHistory(count, workout);
+                break;
+
+            case 3:
+                calculatePRs(count, workout);
+                break;
+
+            case 4:
+                planWorkout(weeklyPlan);
+                break;
+
+            case 5:
+                viewWorkoutPlan(weeklyPlan);
+                break;
+
+            case 6:
+                printf("Exiting program.\n");
+                break;
+
+            default:
+                printf("Invalid choice.\n");
+        }
+
+        printf("\n");
+
+    } while (choice != 6);
 
     return 0;
 }
