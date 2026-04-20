@@ -25,7 +25,7 @@ void displaymenu(){
 
 // Record workout
 void RecordWorkout(int *count, Workouts workout[]){
-    printf("PRs are available for these options if you enter these keywords: bench, squat, and deadlift!\n");
+    printf("PRs are available if you enter these exact keywords as the name of your workout: bench, squat, and deadlift!\n");
     printf("Enter the name of your workout: ");
     scanf(" %49[^\n]", workout[*count].workoutName);
 
@@ -41,7 +41,7 @@ void RecordWorkout(int *count, Workouts workout[]){
 // View workout history
 void viewWorkoutHistory(int count, Workouts workout[]){
     for (int i = 0; i < count; i++){
-        printf("Workout %d\n", i + 1);
+        printf("\nWorkout %d\n", i + 1);
         printf("Workout name: %s\n", workout[i].workoutName);
         printf("Number of reps: %d\n", workout[i].reps);
         printf("Weight: %d\n\n", workout[i].weight);
