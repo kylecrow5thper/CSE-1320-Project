@@ -18,7 +18,6 @@ void displaymenu(){
 }
 
 //Asks for user input then stores that info into a struct in a struct array at position count
-//count increments one each time ran so workouts are in order
 void RecordWorkout(int *count,Workouts workout[]){
 
     printf("Enter Workout name ");
@@ -36,15 +35,36 @@ void viewWorkoutHistory(int count, Workouts workout[]){
         printf("Workout name: %s\nNumber of reps: %d\nWeight: %d\n",workout[i].workoutName,workout[i].reps,workout[i].weight);
     }
 }
+void saveData(int count, Workouts workout[]){
+    FILE *fp = fopen("Workouts.txt", "a+"); 
+    if(fp == NULL){
+        printf("Failed to open file");
+        return;
+    }  
+    for(int i = 0; i < count; i++){
+        fprintf(fp,"%s %d %d\n", workout[i].workoutName, workout[i].reps, workout[i].weight);
+    }
+}
 
+void loadData(int *count, Workouts workout[]){
+    FILE *fp = fopen("Workouts.txt", "r");
+    if(fp == NULL){
+        printf("Failed to open file");
+        return;
+    }
+    *count = 0;
+    while(fscanf(fp,"%50s %d %d", workout[*count].workoutName, &workout[*count].reps, &workout[*count].weight) == 3){
+        (*count)++;
+    } 
+
+
+}
 
 int main() {
     int count=0;
     int *count1 = &count;
     Workouts workout[100];
-    RecordWorkout(count1,workout);
-    RecordWorkout(count1,workout);
-    RecordWorkout(count1,workout);
+    loadData(&count,workout);
     printf("%d\n", count);
     viewWorkoutHistory(count,workout);
     return 0;
