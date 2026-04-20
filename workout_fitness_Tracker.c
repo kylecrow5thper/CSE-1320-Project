@@ -1,46 +1,75 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
-struct Workout {
-    char exercise[30];
+// Struct that holds each workout info
+typedef struct 
+{
+    char workoutName[50];
     int weight;
     int reps;
-};
 
-struct Workout workouts[100];
-char weeklyPlan[7][50];
-int count = 0;
+} Workouts;
 
-void calculatePRs(struct Workout workouts[], int count){
-int prB = 0;
-int prS = 0;
-int prD = 0;
-
-    for(int i = 0; i < count; i++){
-        if(strcmp(workouts[i].exercise,"bench") == 0){
-            if(workouts[i].weight > prB){
-            prB = workouts[i].weight;
-            }
-        }
-        else if(strcmp(workouts[i].exercise,"squat") == 0){
-            if(workouts[i].weight > prS){
-            prS = workouts[i].weight;
-            }
-        }
-        else if(strcmp(workouts[i].exercise,"deadlift") == 0){
-            if(workouts[i].weight > prD){
-            prD = workouts[i].weight;
-            }
-        }
-
-       
-    }
-    printf("Your bench pr is %d\n", prB);
-    printf("Your squat pr is %d\n", prS);
-    printf("Your deadlift pr is %d\n", prD);
+// Displays the menu
+void displaymenu(){
+    printf("1. Record Workout\n2. View Workout History\n3. View Personal Records\n4. Plan Weekly Workout\n5. View Workout Plan\n6. Exit\n\n");
 }
 
+// Record workout
+void RecordWorkout(int *count, Workouts workout[]){
+    printf("Enter Workout name: ");
+    scanf(" %49[^\n]", workout[*count].workoutName);
+
+    printf("Enter number of Reps: ");
+    scanf("%d", &workout[*count].reps);
+
+    printf("Enter Weight: ");
+    scanf("%d", &workout[*count].weight);
+
+    (*count)++;
+}
+
+// View workout history
+void viewWorkoutHistory(int count, Workouts workout[]){
+    for (int i = 0; i < count; i++){
+        printf("Workout %d\n", i + 1);
+        printf("Workout name: %s\n", workout[i].workoutName);
+        printf("Number of reps: %d\n", workout[i].reps);
+        printf("Weight: %d\n\n", workout[i].weight);
+    }
+}
+
+// Calculate PRs
+void calculatePRs(int count, Workouts workout[]){
+    int prB = 0;
+    int prS = 0;
+    int prD = 0;
+
+    for(int i = 0; i < count; i++){
+        if(strcmp(workout[i].workoutName,"bench") == 0){
+            if(workout[i].weight > prB){
+                prB = workout[i].weight;
+            }
+        }
+        else if(strcmp(workout[i].workoutName,"squat") == 0){
+            if(workout[i].weight > prS){
+                prS = workout[i].weight;
+            }
+        }
+        else if(strcmp(workout[i].workoutName,"deadlift") == 0){
+            if(workout[i].weight > prD){
+                prD = workout[i].weight;
+            }
+        }
+    }
+
+    printf("Your bench PR is %d\n", prB);
+    printf("Your squat PR is %d\n", prS);
+    printf("Your deadlift PR is %d\n", prD);
+}
+
+// Plan workout
 void planWorkout(char weeklyPlan[7][50]) {
     int day;
 
@@ -48,22 +77,39 @@ void planWorkout(char weeklyPlan[7][50]) {
     scanf("%d", &day);
 
     if (day >= 0 && day <= 6) {
-
         printf("Enter workout for that day: ");
-        scanf(" %s", weeklyPlan[day]);
+        scanf(" %49[^\n]", weeklyPlan[day]);
 
         printf("Workout plan saved for that day.\n");
     }
     else {
         printf("Invalid day.\n");
     }
-    void viewWorkoutPlan(char weeklyPlan[7][50]) {
-        char days[7][10] = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+}
 
-        printf("\nWeekly Workout Plan:\n");
+// View weekly plan
+void viewWorkoutPlan(char weeklyPlan[7][50]) {
+    char days[7][10] = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
-        for (int i = 0; i < 7; i++) {
-            printf("%s: %s\n", days[i], weeklyPlan[i]);
-        }
+    printf("\nWeekly Workout Plan:\n");
+
+    for (int i = 0; i < 7; i++) {
+        printf("%s: %s\n", days[i], weeklyPlan[i]);
     }
+}
+
+int main() {
+    int count=0;
+    int *count1 = &count;
+    Workouts workout[100];
+
+    RecordWorkout(count1,workout);
+    RecordWorkout(count1,workout);
+    RecordWorkout(count1,workout);
+
+    printf("%d\n", count);
+
+    viewWorkoutHistory(count,workout);
+
+    return 0;
 }
