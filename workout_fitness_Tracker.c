@@ -30,7 +30,14 @@ void RecordWorkout(int *count, Workouts workout[]){
     scanf(" %49[^\n]", workout[*count].workoutName);
 
     printf("Enter number of Reps: ");
-    scanf("%d", &workout[*count].reps);
+    if (scanf("%d", &workout[*count].reps) != 1) {
+    printf("Invalid input. Reps must be a number.\n");
+
+    // clear bad input in case someone adds a null charcter at the end.
+        while (getchar() != '\n'){
+            return;
+        }
+    }
 
     printf("Enter Weight: ");
     scanf("%d", &workout[*count].weight);
@@ -154,7 +161,11 @@ int main() {
     do {
         displaymenu();
         printf("Enter your choice: ");
-        scanf("%d", &choice);
+        if (scanf("%d", &choice) != 1) {
+        printf("Invalid choice. Please enter a number.\n");
+        while (getchar() != '\n');
+        continue;
+}
 
         switch (choice) {
             case 1:
