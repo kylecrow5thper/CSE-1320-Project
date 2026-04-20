@@ -13,12 +13,20 @@ typedef struct
 
 // Displays the menu
 void displaymenu(){
-    printf("1. Record Workout\n2. View Workout History\n3. View Personal Records\n4. Plan Weekly Workout\n5. View Workout Plan\n6. Exit\n\n");
+    printf("1. Record Workout\n");
+    printf("2. View Workout History\n");
+    printf("3. View Personal Records\n");
+    printf("4. Plan Weekly Workout\n");
+    printf("5. View Workout Plan\n");
+    printf("6. Save Data\n");
+    printf("7. Load Data\n");
+    printf("8. Exit\n\n");
 }
 
 // Record workout
 void RecordWorkout(int *count, Workouts workout[]){
-    printf("Enter Workout name: ");
+    printf("PRs are available for these options if you enter these keywords: bench, squat, and deadlift!\n");
+    printf("Enter the name of your workout: ");
     scanf(" %49[^\n]", workout[*count].workoutName);
 
     printf("Enter number of Reps: ");
@@ -98,6 +106,45 @@ void viewWorkoutPlan(char weeklyPlan[7][50]) {
     }
 }
 
+// Save workout data to file
+void saveData(int count, Workouts workout[]){
+    FILE *fp = fopen("Workouts.txt", "w"); 
+
+    if(fp == NULL){
+        printf("Failed to open file\n");
+        return;
+    }  
+
+    for(int i = 0; i < count; i++){
+        fprintf(fp, "%s %d %d\n", workout[i].workoutName, workout[i].reps, workout[i].weight);
+    }
+
+    fclose(fp);
+    printf("Data saved successfully.\n");
+}
+
+// Load workout data from file
+void loadData(int *count, Workouts workout[]){
+    FILE *fp = fopen("Workouts.txt", "r");
+
+    if(fp == NULL){
+        printf("Failed to open file\n");
+        return;
+    }
+
+    *count = 0;
+
+    while(fscanf(fp, "%49s %d %d",
+                 workout[*count].workoutName,
+                 &workout[*count].reps,
+                 &workout[*count].weight) == 3){
+        (*count)++;
+    }
+
+    fclose(fp);
+    printf("Data loaded successfully.\n");
+}
+
 int main() {
     int count = 0;
     Workouts workout[100];
@@ -131,6 +178,14 @@ int main() {
                 break;
 
             case 6:
+                saveData(count, workout);
+                break;
+
+            case 7:
+                loadData(&count, workout);
+                break;
+
+            case 8:
                 printf("Exiting program.\n");
                 break;
 
@@ -140,7 +195,7 @@ int main() {
 
         printf("\n");
 
-    } while (choice != 6);
+    } while (choice != 8);
 
     return 0;
 }
