@@ -18,6 +18,7 @@ void displaymenu(){
 }
 
 //Asks for user input then stores that info into a struct in a struct array at position count
+//count increments one each time ran so workouts are in order
 void RecordWorkout(int *count,Workouts workout[]){
 
     printf("Enter Workout name ");
@@ -35,38 +36,51 @@ void viewWorkoutHistory(int count, Workouts workout[]){
         printf("Workout name: %s\nNumber of reps: %d\nWeight: %d\n",workout[i].workoutName,workout[i].reps,workout[i].weight);
     }
 }
-//this function opens a file checks if it opened then saves workout data to the file
-void saveData(int count, Workouts workout[]){
-    FILE *fp = fopen("Workouts.txt", "a+"); 
-    if(fp == NULL){
-        printf("Failed to open file");
-        return;
-    }  
-    for(int i = 0; i < count; i++){
-        fprintf(fp,"%s %d %d\n", workout[i].workoutName, workout[i].reps, workout[i].weight);
-    }
-}
-//this function opens a file checks if it opened resets count to 0 then loads the data from the file.
-void loadData(int *count, Workouts workout[]){
-    FILE *fp = fopen("Workouts.txt", "r");
-    if(fp == NULL){
-        printf("Failed to open file");
-        return;
-    }
-    *count = 0;
-    while(fscanf(fp,"%50s %d %d", workout[*count].workoutName, &workout[*count].reps, &workout[*count].weight) == 3){
-        (*count)++;
-    } 
 
-
-}
 
 int main() {
-    int count=0;
-    int *count1 = &count;
+    int count = 0;
     Workouts workout[100];
-    loadData(&count,workout);
-    printf("%d\n", count);
-    viewWorkoutHistory(count,workout);
+    char weeklyPlan[7][50] = {""};
+    int choice;
+
+    do {
+        displaymenu();
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                RecordWorkout(&count, workout);
+                break;
+
+            case 2:
+                viewWorkoutHistory(count, workout);
+                break;
+
+            case 3:
+                calculatePRs(count, workout);
+                break;
+
+            case 4:
+                planWorkout(weeklyPlan);
+                break;
+
+            case 5:
+                viewWorkoutPlan(weeklyPlan);
+                break;
+
+            case 6:
+                printf("Exiting program.\n");
+                break;
+
+            default:
+                printf("Invalid choice.\n");
+        }
+
+        printf("\n");
+
+    } while (choice != 6);
+
     return 0;
 }
