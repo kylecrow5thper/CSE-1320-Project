@@ -40,7 +40,12 @@ void RecordWorkout(int *count, Workouts workout[]){
     }
 
     printf("Enter Weight: ");
-    scanf("%d", &workout[*count].weight);
+    if (scanf("%d", &workout[*count].weight) != 1) {
+    printf("Invalid input. Weight must be a number.\n");
+    while (getchar() != '\n'){
+    return;
+    }
+}
 
     (*count)++;
 }
